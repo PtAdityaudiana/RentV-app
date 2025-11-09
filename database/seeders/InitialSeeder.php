@@ -11,20 +11,20 @@ class InitialSeeder extends Seeder
     {
         $now = Carbon::now()->toDateTimeString();
 
-        // Admins
+        
         DB::table('admins')->insert([
             ['username'=>'admin','password'=>'admin123','created_at'=>$now,'updated_at'=>$now],
             ['username'=>'admin2','password'=>'admin234','created_at'=>$now,'updated_at'=>$now],
         ]);
 
-        // Users
+       
         DB::table('users')->insert([
             ['name'=>'Demo User','email'=>'user@example.com','password'=>'user123','phone'=>'081234567890','created_at'=>$now,'updated_at'=>$now],
             ['name'=>'Budi','email'=>'budi@example.com','password'=>'budi123','phone'=>'08111111111','created_at'=>$now,'updated_at'=>$now],
             ['name'=>'Siti','email'=>'siti@example.com','password'=>'siti123','phone'=>'08222222222','created_at'=>$now,'updated_at'=>$now],
         ]);
 
-        // Vehicles
+        
         DB::table('vehicles')->insert([
             ['type'=>'mobil','brand'=>'Toyota','model'=>'Avanza','plate_number'=>'B 1234 AB','color'=>'White','year'=>2018,'photo_path'=>null,'status'=>'available','notes'=>'Bagus untuk 7 penumpang','created_at'=>$now,'updated_at'=>$now],
             ['type'=>'mobil','brand'=>'Daihatsu','model'=>'Xenia','plate_number'=>'B 5678 CD','color'=>'Silver','year'=>2017,'photo_path'=>null,'status'=>'available','notes'=>null,'created_at'=>$now,'updated_at'=>$now],
@@ -32,7 +32,7 @@ class InitialSeeder extends Seeder
             ['type'=>'motor','brand'=>'Yamaha','model'=>'NMax','plate_number'=>'B 8888 GH','color'=>'Blue','year'=>2021,'photo_path'=>null,'status'=>'maintenance','notes'=>'Service bulan depan','created_at'=>$now,'updated_at'=>$now],
         ]);
 
-        // Bookings (one approved, one pending)
+       
         DB::table('bookings')->insert([
             [
                 'user_id'=>1,
