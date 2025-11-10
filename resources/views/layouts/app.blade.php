@@ -18,6 +18,7 @@
           <a href="{{ route('user.login') }}">Login</a>
           <a href="{{ route('user.register') }}">Register</a>
         @endif
+        <a href="{{ route('admin.login') }}">Admin</a>
       </nav>
     </div>
   </header>

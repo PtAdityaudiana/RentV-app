@@ -27,6 +27,10 @@ Route::post('/booking/create', [BookingController::class, 'store'])->name('booki
 Route::get('/user/bookings', [BookingController::class, 'userBookings'])->name('user.bookings');
 
 
+Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'login']);
+Route::get('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+
 /* Admin area */
 Route::prefix('admin')->group(function(){
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
