@@ -29,8 +29,7 @@ class AuthController extends Controller
 
         // get inserted user id
         $user = DB::select("SELECT id FROM users WHERE email = ? LIMIT 1", [$req->email])[0];
-        session(['user_id' => $user->id]);
-        return redirect()->route('user.dashboard');
+        return redirect()->route('user.login')->with('success', 'Registration successful! Please log in to continue.');
     }
 
     public function login(Request $req)
