@@ -51,4 +51,57 @@ class AdminController extends Controller
         return back()->with('success','Booking rejected');
     }
     
+
+    // Users CRUD
+    public function usersIndex()
+    {
+        $this->guard();
+        $users = DB::select("SELECT * FROM users ORDER BY id ASC");
+        return view('admin.users.index', compact('users'));
+    }
+
+    public function usersCreate()
+    {
+        $this->guard();
+        return view('admin.users.create');
+    }
+
+    public function usersStore(Request $req)
+    {
+        $this->guard();
+        $req->validate(['name'=>'required','email'=>'required|email','password'=>'required']);
+        DB::insert("INSERT INTO users (name,email,password,phone,created_at,updated_at) VALUES (?,?,?,?,NOW(),NOW())", [
+            $req->name, $req->email, $req->password, $req->phone
+        ]);
+        return redirect()->route('admin.users.index')->with('success','User created');
+    }
+
+    public function usersEdit($id)
+    {
+        $this->guard();
+        $user = DB::select("SELECT * FROM users WHERE id = ? LIMIT 1", [$id]);
+        if (count($user)===0) abort(404);
+        $user = $user[0];
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function usersUpdate(Request $req,$id)
+    {
+        $this->guard();
+        $req->validate(['name'=>'required','email'=>'required|email']);
+        DB::update("UPDATE users SET name=?, email=?, phone=?, updated_at=NOW() WHERE id = ?", [
+            $req->name, $req->email, $req->phone, $id
+        ]);
+        if ($req->filled('password')) {
+            DB::update("UPDATE users SET password = ? WHERE id = ?", [$req->password, $id]);
+        }
+        return redirect()->route('admin.users.index')->with('success','User updated');
+    }
+
+    public function usersDelete($id)
+    {
+        $this->guard();
+        DB::delete("DELETE FROM users WHERE id = ?", [$id]);
+        return back()->with('success','User deleted');
+    }
 }

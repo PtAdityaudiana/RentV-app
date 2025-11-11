@@ -17,7 +17,7 @@ class AuthController extends Controller
             'password'=>'required|min:3'
         ]);
 
-        // check unique email
+      
         $exists = DB::select("SELECT id FROM users WHERE email = ? LIMIT 1", [$req->email]);
         if (count($exists) > 0) {
             return back()->withErrors(['email'=>'Email already used'])->withInput();
@@ -27,7 +27,7 @@ class AuthController extends Controller
             $req->name, $req->email, $req->password, $req->phone
         ]);
 
-        // get inserted user id
+      
         $user = DB::select("SELECT id FROM users WHERE email = ? LIMIT 1", [$req->email])[0];
         return redirect()->route('user.login')->with('success', 'Registration successful! Please log in to continue.');
     }

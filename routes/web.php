@@ -38,9 +38,9 @@ Route::prefix('admin')->group(function(){
     Route::get('/users', [AdminController::class,'usersIndex'])->name('admin.users.index');
     Route::get('/users/create', [AdminController::class,'usersCreate'])->name('admin.users.create');
     Route::post('/users/store', [AdminController::class,'usersStore'])->name('admin.users.store');
-    Route::get('/users/{id}/edit', [AdminController::class,'usersEdit'])->name('admin.users.edit');
     Route::post('/users/{id}/update', [AdminController::class,'usersUpdate'])->name('admin.users.update');
     Route::post('/users/{id}/delete', [AdminController::class,'usersDelete'])->name('admin.users.delete');
+    Route::get('/users/{id}/edit', [AdminController::class,'usersEdit'])->name('admin.users.edit'); 
     
 
     // vc
