@@ -51,4 +51,7 @@ Route::prefix('admin')->group(function(){
     Route::post('/vehicles/{id}/update', [AdminController::class,'vehiclesUpdate'])->name('admin.vehicles.update');
     Route::post('/vehicles/{id}/delete', [AdminController::class,'vehiclesDelete'])->name('admin.vehicles.delete');
 
+    Route::get('/bookings', [AdminController::class,'bookingsIndex'])->name('admin.bookings.index');
+    Route::post('/bookings/{id}/approve', [AdminController::class,'bookingApprove'])->name('admin.bookings.approve');
+    Route::post('/bookings/{id}/reject', [AdminController::class,'bookingReject'])->name('admin.bookings.reject');
 });
