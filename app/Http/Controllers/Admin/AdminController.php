@@ -20,6 +20,35 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('pending','vehicles','users'));
     }
 
-    // crud usr
+    // Bookings
+    public function bookingsIndex()
+    {
+        $this->guard();
+        $bookings = DB::select("SELECT b.*, u.name as user_name, v.brand, v.model FROM bookings b JOIN users u ON u.id = b.user_id JOIN vehicles v ON v.id = b.vehicle_id ORDER BY b.id DESC");
+        return view('admin.bookings.index', compact('bookings'));
+    }
+
+    public function bookingApprove($id)
+    {
+        $this->guard();
+        $bk = DB::select("SELECT * FROM bookings WHERE id = ? LIMIT 1", [$id]);
+        if (count($bk)===0) abort(404);
+        $booking = $bk[0];
+
+       
+        DB::update("UPDATE bookings SET status='approved', updated_at=NOW() WHERE id = ?", [$id]);
+
+       
+        DB::update("UPDATE vehicles SET status='unavailable', updated_at=NOW() WHERE id = ?", [$booking->vehicle_id]);
+
+        return back()->with('success','Booking approved');
+    }
+
+    public function bookingReject($id)
+    {
+        $this->guard();
+        DB::update("UPDATE bookings SET status='rejected', updated_at=NOW() WHERE id = ?", [$id]);
+        return back()->with('success','Booking rejected');
+    }
     
 }
