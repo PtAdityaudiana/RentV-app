@@ -7,16 +7,29 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function dashboard()
-    {
-        $userId = session('user_id');
-        if (!$userId) return redirect()->route('user.login');
+    public function dashboard(Request $request)
+{
+    $user = DB::table('users')->where('id', session('user_id'))->first();
 
-        $user = DB::select("SELECT * FROM users WHERE id = ? LIMIT 1", [$userId])[0];
-        $bookings = DB::select("SELECT b.*, v.brand, v.model FROM bookings b JOIN vehicles v ON v.id = b.vehicle_id WHERE b.user_id = ? ORDER BY b.id DESC", [$userId]);
+    // Ambil kendaraan yang statusnya masih available
+    $query = "SELECT * FROM vehicles WHERE status = 'available'";
+    $bindings = [];
 
-        return view('user.dashboard', compact('user','bookings'));
+    if ($request->q) {
+        $query .= " AND (brand LIKE ? OR model LIKE ? OR plate_number LIKE ?)";
+        $bindings = array_fill(0, 3, '%'.$request->q.'%');
     }
+
+    if ($request->type) {
+        $query .= " AND type = ?";
+        $bindings[] = $request->type;
+    }
+
+    $vehicles = DB::select($query, $bindings);
+
+    return view('user.dashboard', compact('user', 'vehicles'));
+}
+
 
     public function updateProfile(Request $req)
     {
@@ -46,5 +59,16 @@ class UserController extends Controller
         }
 
         return back()->with('success','Profile updated');
+    }
+
+    public function bookings()
+    {
+        $userId = session('user_id');
+        if (!$userId) return redirect()->route('user.login');
+
+        $user = DB::select("SELECT * FROM users WHERE id = ? LIMIT 1", [$userId])[0];
+        $bookings = DB::select("SELECT b.*, v.brand, v.model FROM bookings b JOIN vehicles v ON v.id = b.vehicle_id WHERE b.user_id = ? ORDER BY b.id DESC", [$userId]);
+
+        return view('user.bookingshistory', compact('user','bookings'));
     }
 }

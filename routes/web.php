@@ -24,7 +24,7 @@ Route::get('/user/logout', [AuthController::class, 'logout'])->name('user.logout
 Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
 Route::post('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
 Route::post('/booking/create', [BookingController::class, 'store'])->name('booking.store');
-Route::get('/user/bookings', [BookingController::class, 'userBookings'])->name('user.bookings');
+Route::get('/user/bookings', [UserController::class, 'bookings'])->name('user.bookingshistory');
 
 
 Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
@@ -42,6 +42,7 @@ Route::prefix('admin')->group(function(){
     Route::get('/users/{id}/edit', [AdminController::class,'usersEdit'])->name('admin.users.edit');
     Route::post('/users/{id}/update', [AdminController::class,'usersUpdate'])->name('admin.users.update');
     Route::post('/users/{id}/delete', [AdminController::class,'usersDelete'])->name('admin.users.delete');
+    
 
     // vehicles
     Route::get('/vehicles', [AdminController::class,'vehiclesIndex'])->name('admin.vehicles.index');

@@ -1,0 +1,18 @@
+@extends('layouts.app')
+@section('title','Daftar Kendaraan')
+@section('content')
+<h1>Riwayat Booking</h1>
+  <table class="table">
+    <thead><tr><th>#</th><th>Vehicle</th><th>Periode</th><th>Status</th></tr></thead>
+    <tbody>
+      @foreach($bookings as $b)
+        <tr>
+          <td>{{ $b->id }}</td>
+          <td>{{ $b->brand }} {{ $b->model }}</td>
+          <td>{{ $b->start_date }} - {{ $b->end_date }}</td>
+          <td>{{ $b->status }}</td>
+        </tr>
+      @endforeach
+    </tbody>
+  </table>
+@endsection

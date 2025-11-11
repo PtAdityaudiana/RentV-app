@@ -10,8 +10,8 @@
     <div class="container">
       <a href="{{ route('landing') }}" class="brand">RentalKendaraan</a>
       <nav>
-        <a href="{{ route('vehicles.index') }}">Kendaraan</a>
         @if(session('user_id'))
+          <a href="{{ route('user.bookingshistory') }}">Booking History</a>
           <a href="{{ route('user.dashboard') }}">Dashboard</a>
           <a href="{{ route('user.logout') }}">Logout</a>
         @elseif(session('admin_id'))
