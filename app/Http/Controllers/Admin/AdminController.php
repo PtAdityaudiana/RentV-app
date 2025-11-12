@@ -104,4 +104,67 @@ class AdminController extends Controller
         DB::delete("DELETE FROM users WHERE id = ?", [$id]);
         return back()->with('success','User deleted');
     }
+
+    // Vehicles CRUD
+    public function vehiclesIndex()
+    {
+        $this->guard();
+        $vehicles = DB::select("SELECT * FROM vehicles ORDER BY id DESC");
+        return view('admin.vehicles.index', compact('vehicles'));
+    }
+
+    public function vehiclesCreate()
+    {
+        $this->guard();
+        return view('admin.vehicles.create');
+    }
+
+    public function vehiclesStore(Request $req)
+    {
+        $this->guard();
+        $req->validate(['type'=>'required','brand'=>'required','plate_number'=>'required']);
+        $photo = null;
+        if ($req->hasFile('photo')) {
+            $photo = $req->file('photo')->store('vehicles','public');
+        }
+        DB::insert("INSERT INTO vehicles (type,brand,model,plate_number,color,year,photo_path,status,notes,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,NOW(),NOW())", [
+            $req->type, $req->brand, $req->model, $req->plate_number, $req->color, $req->year, $photo, $req->status ?? 'available', $req->notes
+        ]);
+        return redirect()->route('admin.vehicles.index')->with('success','Vehicle added');
+    }
+
+    public function vehiclesEdit($id)
+    {
+        $this->guard();
+        $v = DB::select("SELECT * FROM vehicles WHERE id = ? LIMIT 1", [$id]);
+        if (count($v)===0) abort(404);
+        $vehicle = $v[0];
+        return view('admin.vehicles.edit', compact('vehicle'));
+    }
+
+    public function vehiclesUpdate(Request $req,$id)
+    {
+        $this->guard();
+        $photo = null;
+        if ($req->hasFile('photo')) {
+            $photo = $req->file('photo')->store('vehicles','public');
+            DB::update("UPDATE vehicles SET type=?, brand=?, model=?, plate_number=?, color=?, year=?, photo_path=?, status=?, notes=?, updated_at=NOW() WHERE id = ?", [
+                $req->type, $req->brand, $req->model, $req->plate_number, $req->color, $req->year, $photo, $req->status, $req->notes, $id
+            ]);
+        } else {
+            DB::update("UPDATE vehicles SET type=?, brand=?, model=?, plate_number=?, color=?, year=?, status=?, notes=?, updated_at=NOW() WHERE id = ?", [
+                $req->type, $req->brand, $req->model, $req->plate_number, $req->color, $req->year, $req->status, $req->notes, $id
+            ]);
+        }
+
+        return redirect()->route('admin.vehicles.index')->with('success','Vehicle updated');
+    }
+
+    public function vehiclesDelete($id)
+    {
+        $this->guard();
+        DB::delete("DELETE FROM vehicles WHERE id = ?", [$id]);
+        return back()->with('success','Vehicle deleted');
+    }
+
 }

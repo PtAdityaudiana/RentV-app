@@ -47,9 +47,9 @@ Route::prefix('admin')->group(function(){
     Route::get('/vehicles', [AdminController::class,'vehiclesIndex'])->name('admin.vehicles.index');
     Route::get('/vehicles/create', [AdminController::class,'vehiclesCreate'])->name('admin.vehicles.create');
     Route::post('/vehicles/store', [AdminController::class,'vehiclesStore'])->name('admin.vehicles.store');
-    Route::get('/vehicles/{id}/edit', [AdminController::class,'vehiclesEdit'])->name('admin.vehicles.edit');
     Route::post('/vehicles/{id}/update', [AdminController::class,'vehiclesUpdate'])->name('admin.vehicles.update');
     Route::post('/vehicles/{id}/delete', [AdminController::class,'vehiclesDelete'])->name('admin.vehicles.delete');
+    Route::get('/vehicles/{id}/edit', [AdminController::class,'vehiclesEdit'])->name('admin.vehicles.edit');
 
     // booking
     Route::get('/bookings', [AdminController::class,'bookingsIndex'])->name('admin.bookings.index');
