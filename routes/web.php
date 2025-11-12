@@ -57,4 +57,6 @@ Route::prefix('admin')->group(function(){
     Route::get('/bookings', [AdminController::class,'bookingsIndex'])->name('admin.bookings.index');
     Route::post('/bookings/{id}/approve', [AdminController::class,'bookingApprove'])->name('admin.bookings.approve');
     Route::post('/bookings/{id}/reject', [AdminController::class,'bookingReject'])->name('admin.bookings.reject');
+    Route::post('/admin/bookings/{id}/return', [AdminController::class, 'bookingReturn'])->name('admin.bookings.return');
+Route::post('/admin/bookings/{id}/late', [AdminController::class, 'bookingLate'])->name('admin.bookings.late');
 });
