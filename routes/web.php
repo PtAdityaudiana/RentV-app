@@ -41,6 +41,8 @@ Route::prefix('admin')->group(function(){
     Route::post('/users/{id}/update', [AdminController::class,'usersUpdate'])->name('admin.users.update');
     Route::post('/users/{id}/delete', [AdminController::class,'usersDelete'])->name('admin.users.delete');
     Route::get('/users/{id}/edit', [AdminController::class,'usersEdit'])->name('admin.users.edit'); 
+    Route::get('/user/profile', [UserController::class, 'editProfile'])->name('user.profile.edit');
+    Route::post('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
     
 
     // vc

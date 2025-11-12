@@ -61,6 +61,14 @@ class UserController extends Controller
         return back()->with('success','Profile updated');
     }
 
+    public function editProfile()
+{
+    $userId = session('user_id');
+    if (!$userId) return redirect()->route('user.login');
+    $user = DB::selectOne("SELECT * FROM users WHERE id = ?", [$userId]);
+    return view('user.profile', compact('user'));
+}
+
     public function bookings()
     {
         $userId = session('user_id');

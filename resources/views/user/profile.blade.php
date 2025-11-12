@@ -1,0 +1,56 @@
+@extends('layouts.app')
+@section('title','Edit Profil')
+
+@section('content')
+<div class="container">
+  <h2>Profil Pengguna</h2>
+
+  @if(session('success'))
+    <div class="alert success">{{ session('success') }}</div>
+  @endif
+  @if(session('error'))
+    <div class="alert error">{{ session('error') }}</div>
+  @endif
+
+  <div class="card profile-card">
+    <div class="card-header">
+      <h3>Update Profil</h3>
+    </div>
+    <div class="card-body">
+      <form method="POST" action="{{ route('user.profile.update') }}" enctype="multipart/form-data">
+        @csrf
+        
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+          <input type="text" name="name" value="{{ $user->name }}" required>
+        </div>
+
+        <div class="form-group">
+          <label>No. Telepon</label>
+          <input type="text" name="phone" value="{{ $user->phone }}">
+        </div>
+
+        <div class="form-group">
+          <label>Foto Profil</label>
+          <input type="file" name="avatar">
+          @if($user->avatar_path)
+            <div class="preview">
+              <img src="{{ asset('storage/' . $user->avatar_path) }}" alt="Avatar">
+            </div>
+          @endif
+        </div>
+
+        <div class="form-group">
+          <label>Password Baru (opsional)</label>
+          <input type="password" name="password" placeholder="Kosongkan jika tidak ingin mengubah">
+        </div>
+
+        <div class="form-group">
+          <button type="submit">Simpan Perubahan</button>
+          <a href="{{ route('user.dashboard') }}" class="btn cancel">Kembali</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endsection

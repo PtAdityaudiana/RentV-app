@@ -11,6 +11,7 @@
       <a href="{{ route('landing') }}" class="brand">Rent-V</a>
       <nav>
         @if(session('user_id'))
+          <a href="{{ route('user.profile.edit') }}">Profile</a>
           <a href="{{ route('user.bookingshistory') }}">Booking History</a>
           <a href="{{ route('user.dashboard') }}">Dashboard</a>
           <a href="{{ route('user.logout') }}">Logout</a>
