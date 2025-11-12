@@ -28,6 +28,9 @@
     <label>Tahun:</label>
     <input type="number" name="year" value="{{ $vehicle->year }}" min="1900" max="{{ date('Y') }}">
 
+    <label>Harga per Hari (Rp):</label>
+    <input type="number" name="price_per_day" value="{{ $vehicle->price_per_day }}" step="0.01" required>
+
     <label>Status:</label>
     <select name="status" required>
         <option value="available" {{ $vehicle->status == 'available' ? 'selected' : '' }}>Available</option>

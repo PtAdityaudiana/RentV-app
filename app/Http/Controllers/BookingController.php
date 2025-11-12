@@ -17,13 +17,13 @@ class BookingController extends Controller
         $userId = session('user_id');
         if (!$userId) return redirect()->route('user.login')->withErrors(['auth'=>'Please login']);
 
-        
         $v = DB::select("SELECT * FROM vehicles WHERE id = ? LIMIT 1", [$req->vehicle_id]);
         if (count($v) === 0) return back()->withErrors(['vehicle'=>'Vehicle not found']);
-        if ($v[0]->status !== 'available') return back()->withErrors(['vehicle'=>'Vehicle not available']);
+        $vehicle = $v[0];
+        if ($vehicle->status !== 'available') return back()->withErrors(['vehicle'=>'Vehicle not available']);
 
-        DB::insert("INSERT INTO bookings (user_id,vehicle_id,start_date,end_date,status,notes,created_at,updated_at) VALUES (?,?,?,?,? ,?, NOW(), NOW())", [
-            $userId, $req->vehicle_id, $req->start_date, $req->end_date, 'pending', $req->notes
+        DB::insert("INSERT INTO bookings (user_id,vehicle_id,price_per_day,start_date,end_date,status,notes,created_at,updated_at) VALUES (?,?,?,?,?,?,?,NOW(),NOW())", [
+            $userId, $req->vehicle_id, $vehicle->price_per_day, $req->start_date, $req->end_date, 'pending', $req->notes
         ]);
 
         return redirect()->route('user.bookingshistory')->with('success','Booking created (pending approval)');

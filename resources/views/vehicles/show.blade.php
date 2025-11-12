@@ -6,7 +6,8 @@
   <p>Plat: {{ $vehicle->plate_number }}</p>
   <p>Type: {{ $vehicle->type }}</p>
   <p>Status: {{ $vehicle->status }}</p>
-  <p>{{ $vehicle->notes }}</p>
+  <p>Harga perhari: Rp.{{ $vehicle->price_per_day}}</p>
+  <p>Note: {{ $vehicle->notes }}</p>
 
   @if(session('user_id'))
     @if($vehicle->status === 'available')

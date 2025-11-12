@@ -27,6 +27,9 @@
     <label>Tahun:</label>
     <input type="number" name="year" min="1900" max="{{ date('Y') }}">
 
+    <label>Harga per Hari (Rp):</label>
+    <input type="number" name="price_per_day" step="0.01" required>
+
     <label>Status:</label>
     <select name="status" required>
         <option value="available">Available</option>
