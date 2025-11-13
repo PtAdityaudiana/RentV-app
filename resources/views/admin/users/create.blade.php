@@ -1,23 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-<h2>Tambah User Baru</h2>
+<div class="profile-card">
+  <div class="card-header">
+    <h2>Tambah User Baru</h2>
+  </div>
+  <div class="card-body">
+    <form action="{{ route('admin.users.store') }}" method="POST">
+      @csrf
+      <div class="form-group">
+        <label>Nama</label>
+        <input type="text" name="name" required>
+      </div>
 
-<form action="{{ route('admin.users.store') }}" method="POST">
-    @csrf
-    <label>Nama:</label>
-    <input type="text" name="name" required>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" required>
+      </div>
 
-    <label>Email:</label>
-    <input type="email" name="email" required>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="text" name="password" required>
+      </div>
 
-    <label>Password:</label>
-    <input type="text" name="password" required>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="text" name="phone" required>
+      </div>
 
-    <label>Phone:</label>
-    <input type="text" name="phone" required>
-
-    <button type="submit">Simpan</button>
-    <a href="{{ route('admin.users.index') }}" class="cancel">Batal</a>
-</form>
+      <button type="submit">Simpan</button>
+      <a href="{{ route('admin.users.index') }}" class="cancel">Batal</a>
+    </form>
+  </div>
+</div>
 @endsection

@@ -1,49 +1,74 @@
 @extends('layouts.app')
 
 @section('content')
-<h2>Tambah Kendaraan Baru</h2>
+<div class="profile-card">
+  <div class="card-header">
+    <h2>Tambah Kendaraan Baru</h2>
+  </div>
+  <div class="card-body">
+    <form action="{{ route('admin.vehicles.store') }}" method="POST" enctype="multipart/form-data">
+      @csrf
 
-<form action="{{ route('admin.vehicles.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf
+      <div class="form-group">
+        <label>Jenis Kendaraan</label>
+        <select name="type" required>
+          <option value="motor">Motor</option>
+          <option value="mobil">Mobil</option>
+        </select>
+      </div>
 
-    <label>Jenis Kendaraan:</label>
-    <select name="type" required>
-        <option value="motor">Motor</option>
-        <option value="mobil">Mobil</option>
-    </select>
+      <div class="form-group">
+        <label>Brand</label>
+        <input type="text" name="brand" required>
+      </div>
 
-    <label>Brand:</label>
-    <input type="text" name="brand" required>
+      <div class="form-group">
+        <label>Model</label>
+        <input type="text" name="model">
+      </div>
 
-    <label>Model:</label>
-    <input type="text" name="model">
+      <div class="form-group">
+        <label>Plat Nomor</label>
+        <input type="text" name="plate_number" required>
+      </div>
 
-    <label>Plat Nomor:</label>
-    <input type="text" name="plate_number" required>
+      <div class="form-group">
+        <label>Warna</label>
+        <input type="text" name="color">
+      </div>
 
-    <label>Warna:</label>
-    <input type="text" name="color">
+      <div class="form-group">
+        <label>Tahun</label>
+        <input type="number" name="year" min="1900" max="{{ date('Y') }}">
+      </div>
 
-    <label>Tahun:</label>
-    <input type="number" name="year" min="1900" max="{{ date('Y') }}">
+      <div class="form-group">
+        <label>Harga per Hari (Rp)</label>
+        <input type="number" name="price_per_day" step="0.01" required>
+      </div>
 
-    <label>Harga per Hari (Rp):</label>
-    <input type="number" name="price_per_day" step="0.01" required>
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status" required>
+          <option value="available">Available</option>
+          <option value="maintenance">Maintenance</option>
+          <option value="unavailable">Unavailable</option>
+        </select>
+      </div>
 
-    <label>Status:</label>
-    <select name="status" required>
-        <option value="available">Available</option>
-        <option value="maintenance">Maintenance</option>
-        <option value="unavailable">Unavailable</option>
-    </select>
+      <div class="form-group">
+        <label>Catatan</label>
+        <textarea name="notes" rows="3"></textarea>
+      </div>
 
-    <label>Catatan:</label>
-    <textarea name="notes" rows="3"></textarea>
+      <div class="form-group">
+        <label>Foto (opsional)</label>
+        <input type="file" name="photo">
+      </div>
 
-    <label>Foto (opsional):</label>
-    <input type="file" name="photo">
-
-    <button type="submit">Simpan</button>
-    <a href="{{ route('admin.vehicles.index') }}" class="cancel">Batal</a>
-</form>
+      <button type="submit">Simpan</button>
+      <a href="{{ route('admin.vehicles.index') }}" class="cancel">Batal</a>
+    </form>
+  </div>
+</div>
 @endsection

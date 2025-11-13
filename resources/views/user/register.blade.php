@@ -1,12 +1,36 @@
 @extends('layouts.app')
+
 @section('content')
-  <h2>User Register</h2>
-  <form method="POST" action="{{ route('user.register') }}">
-    @csrf
-    <input name="name" placeholder="Nama" value="{{ old('name') }}">
-    <input name="email" placeholder="email" value="{{ old('email') }}">
-    <input name="phone" placeholder="phone" value="{{ old('phone') }}">
-    <input name="password" type="password" placeholder="password">
-    <button>Register</button>
-  </form>
+<div class="profile-card">
+  <div class="card-header">
+    <h2>User Register</h2>
+  </div>
+  <div class="card-body">
+    <form method="POST" action="{{ route('user.register') }}">
+      @csrf
+
+      <div class="form-group">
+        <label>Nama</label>
+        <input name="name" type="text" placeholder="Masukkan nama lengkap" value="{{ old('name') }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input name="email" type="email" placeholder="Masukkan email" value="{{ old('email') }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Phone</label>
+        <input name="phone" type="text" placeholder="Masukkan nomor telepon" value="{{ old('phone') }}" required>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input name="password" type="password" placeholder="Masukkan password" required>
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+</div>
 @endsection
