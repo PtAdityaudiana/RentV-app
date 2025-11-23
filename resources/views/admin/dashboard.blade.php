@@ -23,6 +23,7 @@
         <th>User</th>
         <th>Vehicle</th>
         <th>Period</th>
+        <th>Note</th>
         <th>Status</th>
         <th>Action</th>
         <th>Status Control</th>
@@ -35,6 +36,7 @@
         <td>{{ $b->user_name }}</td>
         <td>{{ $b->brand }} {{ $b->model }}</td>
         <td>{{ $b->start_date }} - {{ $b->end_date }}</td>
+        <td>{{ $b->notes }}</td>
         <td>{{ ucfirst($b->status) }}</td>
         <td>
           @if($b->status === 'pending')
@@ -60,7 +62,7 @@
           @elseif($b->status === 'returned')
             <span style="color:green;">Returned</span>
           @elseif($b->status === 'rejected')
-            <span style="color:gray;">Rejected</span>
+            <span style="color:black;">Rejected</span>
           @endif
         </td>
       </tr>
