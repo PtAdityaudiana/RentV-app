@@ -14,17 +14,13 @@ Route::get('/test-mw', function () {
     return "MW OK";
 })->middleware('user');
 
-// =========================
-// Public Routes (No Login)
-// =========================
+
 Route::get('/', [SiteController::class, 'landing'])->name('landing');
 Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicles.index');
 Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
 
 
-// =========================
-// User Authentication
-// =========================
+//user auth
 Route::get('/user/register', [AuthController::class, 'showRegister'])->name('user.register');
 Route::post('/user/register', [AuthController::class, 'register']);
 
@@ -36,9 +32,6 @@ Route::get('/user/logout', [AuthController::class, 'logout'])
     ->name('user.logout');
 
 
-// =========================
-// Protected User Area
-// =========================
 Route::middleware('user')->group(function () {
 
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
@@ -58,9 +51,7 @@ Route::middleware('user')->group(function () {
 });
 
 
-// =========================
-// ADMIN AUTH
-// =========================
+// Admin Auth
 Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
@@ -69,14 +60,11 @@ Route::get('/admin/logout', [AdminAuthController::class, 'logout'])
     ->name('admin.logout');
 
 
-// =========================
-// Protected Admin Area
-// =========================
 Route::prefix('admin')->middleware('admin')->group(function () {
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-    // ----- Manage Users -----
+    
     Route::get('/users', [AdminController::class,'usersIndex'])->name('admin.users.index');
     Route::get('/users/create', [AdminController::class,'usersCreate'])->name('admin.users.create');
     Route::post('/users/store', [AdminController::class,'usersStore'])->name('admin.users.store');
@@ -84,7 +72,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('/users/{id}/delete', [AdminController::class,'usersDelete'])->name('admin.users.delete');
     Route::get('/users/{id}/edit', [AdminController::class,'usersEdit'])->name('admin.users.edit');
 
-    // ----- Manage Vehicles -----
+    
     Route::get('/vehicles', [AdminController::class,'vehiclesIndex'])->name('admin.vehicles.index');
     Route::get('/vehicles/create', [AdminController::class,'vehiclesCreate'])->name('admin.vehicles.create');
     Route::post('/vehicles/store', [AdminController::class,'vehiclesStore'])->name('admin.vehicles.store');
@@ -92,7 +80,7 @@ Route::prefix('admin')->middleware('admin')->group(function () {
     Route::post('/vehicles/{id}/delete', [AdminController::class,'vehiclesDelete'])->name('admin.vehicles.delete');
     Route::get('/vehicles/{id}/edit', [AdminController::class,'vehiclesEdit'])->name('admin.vehicles.edit');
 
-    // ----- Manage Bookings -----
+    
     Route::get('/bookings', [AdminController::class,'bookingsIndex'])->name('admin.bookings.index');
     Route::post('/bookings/{id}/approve', [AdminController::class,'bookingApprove'])->name('admin.bookings.approve');
     Route::post('/bookings/{id}/reject', [AdminController::class,'bookingReject'])->name('admin.bookings.reject');
