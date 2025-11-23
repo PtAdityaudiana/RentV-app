@@ -16,6 +16,7 @@ class AdminAuthController extends Controller
         if (count($admin) === 0 || $admin[0]->password !== $req->password) {
             return back()->withErrors(['username'=>'Credentials invalid'])->withInput();
         }
+        session()->forget('user_id');
         session(['admin_id' => $admin[0]->id]);
         return redirect()->route('admin.dashboard');
     }

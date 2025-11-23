@@ -39,6 +39,7 @@ class AuthController extends Controller
         if (count($user) === 0 || $user[0]->password !== $req->password) {
             return back()->withErrors(['email'=>'Credentials not match'])->withInput();
         }
+        session()->forget('admin_id');
         session(['user_id' => $user[0]->id]);
         return redirect()->route('user.dashboard');
     }
