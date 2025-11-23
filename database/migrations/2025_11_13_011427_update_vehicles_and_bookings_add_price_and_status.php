@@ -21,8 +21,7 @@ return new class extends Migration
                 $table->decimal('price_per_day', 10, 3)->nullable()->after('vehicle_id');
             }
 
-            // Karena ENUM sudah ada di DB, kita pastikan migration-nya bisa mereplikasi itu di server baru.
-            // Di MySQL/MariaDB, kita perlu alter secara manual karena enum tidak bisa "extend" otomatis.
+            
             if (Schema::hasColumn('bookings', 'status')) {
                 DB::statement("ALTER TABLE bookings MODIFY status 
                     ENUM('pending','approved','rejected','ongoing','completed','late','returned') 
@@ -45,7 +44,7 @@ return new class extends Migration
                 $table->dropColumn('price_per_day');
             }
 
-            // Kembalikan enum ke versi lama jika ingin rollback
+            
             DB::statement("ALTER TABLE bookings MODIFY status 
                 ENUM('pending','approved','rejected','ongoing','completed') 
                 NOT NULL DEFAULT 'pending'");
