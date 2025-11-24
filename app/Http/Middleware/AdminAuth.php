@@ -7,10 +7,9 @@ class AdminAuth
 {
     public function handle($request, Closure $next)
     {
-        if (!session('admin_id')) {
+        if (!session('admin_id') && !session('user_id')) {
             return redirect()->route('admin.login')->withErrors(['auth' => 'Admin access required']);
         }
-        
 
         if (session('user_id')) {
             return redirect()->route('user.dashboard')->withErrors(['auth' => 'You are not admin']);
