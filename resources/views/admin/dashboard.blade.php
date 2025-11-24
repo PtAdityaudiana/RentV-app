@@ -24,7 +24,6 @@
         <th>Vehicle</th>
         <th>Period</th>
         <th>Note</th>
-        <th>Status</th>
         <th>Action</th>
         <th>Status Control</th>
       </tr>
@@ -37,7 +36,7 @@
         <td>{{ $b->brand }} {{ $b->model }}</td>
         <td>{{ $b->start_date }} - {{ $b->end_date }}</td>
         <td>{{ $b->notes }}</td>
-        <td>{{ ucfirst($b->status) }}</td>
+
         <td>
           @if($b->status === 'pending')
             <form method="POST" action="{{ route('admin.bookings.approve', $b->id) }}" style="display:inline">@csrf
@@ -57,12 +56,16 @@
             <form method="POST" action="{{ route('admin.bookings.late', $b->id) }}" style="display:inline">@csrf
               <button class="late">Mark as Late</button>
             </form>
+
           @elseif($b->status === 'late')
             <span style="color:red;">Late</span>
+
           @elseif($b->status === 'returned')
             <span style="color:green;">Returned</span>
+
           @elseif($b->status === 'rejected')
             <span style="color:black;">Rejected</span>
+
           @endif
         </td>
       </tr>

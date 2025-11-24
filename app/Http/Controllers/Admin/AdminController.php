@@ -55,7 +55,7 @@ class AdminController extends Controller
         $this->guard();
         DB::update("UPDATE bookings SET status='returned', updated_at=NOW() WHERE id = ?", [$id]);
         $vehicle = DB::select("SELECT vehicle_id FROM bookings WHERE id = ?", [$id])[0];
-        DB::update("UPDATE vehicles SET status='available', updated_at=NOW() WHERE id = ?", [$vehicle->vehicle_id]);
+        DB::update("UPDATE vehicles SET status='maintenance', updated_at=NOW() WHERE id = ?", [$vehicle->vehicle_id]);
         return back()->with('success','Vehicle marked as returned');
     }
 
