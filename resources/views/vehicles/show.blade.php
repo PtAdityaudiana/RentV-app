@@ -11,6 +11,7 @@
     <p><strong>Plat:</strong> {{ $vehicle->plate_number }}</p>
     <p><strong>Type:</strong> {{ $vehicle->type }}</p>
     <p><strong>Warna:</strong> {{ $vehicle->color }}</p>
+    <p><strong>Tahun:</strong> {{$vehicle->year}}</p>
     <p><strong>Status:</strong> {{ $vehicle->status }}</p>
     <p><strong>Harga perhari:</strong> Rp.{{ $vehicle->price_per_day }}</p>
     <p><strong>Note:</strong> {{ $vehicle->notes }}</p>

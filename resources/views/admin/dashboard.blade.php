@@ -31,9 +31,9 @@
     <tbody>
       @foreach($bookings as $b)
       <tr>
-        <td>{{ $b->id }}</td>
-        <td>{{ $b->user_name }}</td>
-        <td>{{ $b->brand }} {{ $b->model }}</td>
+        <td>{{ $b->user->id }}</td>
+        <td>{{ $b->user->name }}</td>
+        <td>{{ $b->vehicle->brand }} {{ $b->vehicle->model }}</td>
         <td>{{ $b->start_date }} - {{ $b->end_date }}</td>
         <td>{{ $b->notes }}</td>
 

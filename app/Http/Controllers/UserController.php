@@ -1,92 +1,99 @@
 <?php
+
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Vehicle;
+use App\Models\Booking;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function dashboard(Request $request)
-{
-    $user = DB::table('users')->where('id', session('user_id'))->first();
-
-    // Ambil kendaraan yang statusnya masih available
-    $query = "SELECT * FROM vehicles WHERE status = 'available'";
-    $bindings = [];
-
-    if ($request->q) {
-        $query .= " AND (brand LIKE ? OR model LIKE ? OR plate_number LIKE ?)";
-        $bindings = array_fill(0, 3, '%'.$request->q.'%');
-    }
-
-    if ($request->type) {
-        $query .= " AND type = ?";
-        $bindings[] = $request->type;
-    }
-
-    $vehicles = DB::select($query, $bindings);
-
-    return view('user.dashboard', compact('user', 'vehicles'));
-}
-
-
-    public function updateProfile(Request $req)
+    private function guard()
     {
-        $userId = session('user_id');
-        if (!$userId) return redirect()->route('user.login');
-
-        $req->validate(['name'=>'required']);
-
-        $user = DB::selectOne("SELECT avatar_path FROM users WHERE id = ?", [$userId]);
-        if ($req->has('delete_avatar') && $user->avatar_path) {
-
-            // hapus file fisik di storage
-            Storage::disk('public')->delete($user->avatar_path);
-    
-            // update path jadu null
-            DB::update("UPDATE users SET avatar_path = NULL WHERE id = ?", [$userId]);
+        if (!session('user_id')) {
+            return redirect()->route('user.login')->send();
         }
+    }
 
-        $avatarPath = null;
-        if ($req->hasFile('avatar')) {
-            $avatarPath = $req->file('avatar')->store('avatars','public');
-        }
+    public function dashboard(Request $request)
+    {
+        $this->guard();
 
-        // update
-        if ($avatarPath) {
-            DB::update("UPDATE users SET name=?, phone=?, avatar_path=?, updated_at=NOW() WHERE id = ?", [
-                $req->name, $req->phone, $avatarPath, $userId
-            ]);
-        } else {
-            DB::update("UPDATE users SET name=?, phone=?, updated_at=NOW() WHERE id = ?", [
-                $req->name, $req->phone, $userId
-            ]);
-        }
+        $user = User::findOrFail(session('user_id'));
 
-        if ($req->filled('password')) {
-            DB::update("UPDATE users SET password = ? WHERE id = ?", [$req->password, $userId]);
-        }
+        $vehicles = Vehicle::where('status', 'available')
+            ->when($request->q, function ($q) use ($request) {
+                $q->where(function ($x) use ($request) {
+                    $x->where('brand', 'like', "%{$request->q}%")
+                      ->orWhere('model', 'like', "%{$request->q}%")
+                      ->orWhere('plate_number', 'like', "%{$request->q}%");
+                });
+            })
+            ->when($request->type, fn($q) => $q->where('type', $request->type))
+            ->get();
 
-        return back()->with('success','Profile updated');
+        return view('user.dashboard', compact('user', 'vehicles'));
     }
 
     public function editProfile()
-{
-    $userId = session('user_id');
-    if (!$userId) return redirect()->route('user.login');
-    $user = DB::selectOne("SELECT * FROM users WHERE id = ?", [$userId]);
-    return view('user.profile', compact('user'));
-}
+    {
+        $this->guard();
+
+        $user = User::findOrFail(session('user_id'));
+        return view('user.profile', compact('user'));
+    }
+
+    public function updateProfile(Request $req)
+    {
+        $this->guard();
+
+        $user = User::findOrFail(session('user_id'));
+
+        $req->validate([
+            'name' => 'required'
+        ]);
+
+
+        if ($req->has('delete_avatar') && $user->avatar_path) {
+            Storage::disk('public')->delete($user->avatar_path);
+            $user->avatar_path = null;
+        }
+
+        
+        if ($req->hasFile('avatar')) {
+            if ($user->avatar_path) {
+                Storage::disk('public')->delete($user->avatar_path);
+            }
+            $user->avatar_path = $req->file('avatar')->store('avatars', 'public');
+        }
+
+        $user->name  = $req->name;
+        $user->phone = $req->phone;
+
+        if ($req->filled('password')) {
+            $user->password = Hash::make($req->password);
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Profile updated');
+    }
+
 
     public function bookings()
     {
-        $userId = session('user_id');
-        if (!$userId) return redirect()->route('user.login');
+        $this->guard();
 
-        $user = DB::select("SELECT * FROM users WHERE id = ? LIMIT 1", [$userId])[0];
-        $bookings = DB::select("SELECT b.*, v.brand, v.model FROM bookings b JOIN vehicles v ON v.id = b.vehicle_id WHERE b.user_id = ? ORDER BY b.id DESC", [$userId]);
+        $user = User::findOrFail(session('user_id'));
 
-        return view('user.bookingshistory', compact('user','bookings'));
+        $bookings = Booking::with('vehicle')
+            ->where('user_id', $user->id)
+            ->orderByDesc('id')
+            ->get();
+
+        return view('user.bookingshistory', compact('user', 'bookings'));
     }
 }

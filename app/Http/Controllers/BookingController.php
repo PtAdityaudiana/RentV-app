@@ -1,46 +1,65 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Booking;
+use App\Models\Vehicle;
 
 class BookingController extends Controller
 {
     public function store(Request $req)
     {
         $req->validate([
-            'vehicle_id'=>'required|numeric',
-            'start_date'=>'required|date',
-            'end_date'=>'required|date|after:start_date'
+            'vehicle_id' => 'required|numeric',
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after:start_date',
         ]);
 
         $userId = session('user_id');
-        if (!$userId) return redirect()->route('user.login')->withErrors(['auth'=>'Please login']);
+        if (!$userId) {
+            return redirect()->route('user.login')
+                ->withErrors(['auth' => 'Please login']);
+        }
 
-        $v = DB::select("SELECT * FROM vehicles WHERE id = ? LIMIT 1", [$req->vehicle_id]);
-        if (count($v) === 0) return back()->withErrors(['vehicle'=>'Vehicle not found']);
-        $vehicle = $v[0];
-        if ($vehicle->status !== 'available') return back()->withErrors(['vehicle'=>'Vehicle not available']);
+        // Ambil vehicle
+        $vehicle = Vehicle::find($req->vehicle_id);
+        if (!$vehicle) {
+            return back()->withErrors(['vehicle' => 'Vehicle not found']);
+        }
 
-        DB::insert("INSERT INTO bookings (user_id,vehicle_id,price_per_day,start_date,end_date,status,notes,created_at,updated_at) VALUES (?,?,?,?,?,?,?,NOW(),NOW())", [
-            $userId, $req->vehicle_id, $vehicle->price_per_day, $req->start_date, $req->end_date, 'pending', $req->notes
+        if ($vehicle->status !== 'available') {
+            return back()->withErrors(['vehicle' => 'Vehicle not available']);
+        }
+
+        
+        Booking::create([
+            'user_id'       => $userId,
+            'vehicle_id'    => $vehicle->id,
+            'price_per_day' => $vehicle->price_per_day,
+            'start_date'    => $req->start_date,
+            'end_date'      => $req->end_date,
+            'status'        => 'pending',
+            'notes'         => $req->notes,
         ]);
 
-        return redirect()->route('user.bookingshistory')->with('success','Booking created (pending approval)');
+        return redirect()
+            ->route('user.bookingshistory')
+            ->with('success', 'Booking created (pending approval)');
     }
 
     public function userBookings()
     {
         $userId = session('user_id');
-        if (!$userId) return redirect()->route('user.login');
+        if (!$userId) {
+            return redirect()->route('user.login');
+        }
 
-        $bookings = DB::select("
-            SELECT b.*, v.brand, v.model, v.plate_number
-            FROM bookings b
-            JOIN vehicles v ON v.id = b.vehicle_id
-            WHERE b.user_id = ?
-            ORDER BY b.id DESC
-        ", [$userId]);
+        // Load bookings dgn relasi kendaraan
+        $bookings = Booking::with('vehicle')
+            ->where('user_id', $userId)
+            ->orderByDesc('id')
+            ->get();
 
         return view('user.bookingshistory', compact('bookings'));
     }

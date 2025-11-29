@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Vehicle extends Model
 {
-    protected $table = 'users';
+    protected $table = 'vehicles';
 
     protected $fillable = [
-        'name', 'email', 'password', 'phone', 'avatar_path'
+        'type','brand','model','plate_number','color','year', 'price_per_day', 'photo_path', 'status', 'notes'
     ];
 
     public function bookings()
@@ -17,4 +17,3 @@ class User extends Model
         return $this->hasMany(Booking::class);
     }
 }
-

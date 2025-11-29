@@ -1,41 +1,37 @@
 <?php
+
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function showRegister(){ 
-        return view('user.register'); 
+    public function showRegister()
+    {
+        return view('user.register');
     }
 
-    public function showLogin(){ 
-        return view('user.login'); 
+    public function showLogin()
+    {
+        return view('user.login');
     }
 
     public function register(Request $req)
     {
         $req->validate([
             'name'=>'required',
-            'email'=>'required|email',
+            'email'=>'required|email|unique:users,email',
             'password'=>'required|min:3'
         ]);
 
-        $exists = DB::select("SELECT id FROM users WHERE email = ? LIMIT 1", [$req->email]);
-        if (count($exists) > 0) {
-            return back()->withErrors(['email'=>'Email already used'])->withInput();
-        }
-
-        //HASH password user baru
-        $hashed = Hash::make($req->password);
-
-        DB::insert(
-            "INSERT INTO users (name,email,password,phone,created_at,updated_at) 
-             VALUES (?,?,?,?,NOW(),NOW())",
-            [$req->name, $req->email, $hashed, $req->phone]
-        );
+        $user = User::create([
+            'name'      => $req->name,
+            'email'     => $req->email,
+            'phone'     => $req->phone,
+            'password'  => Hash::make($req->password),
+        ]);
 
         return redirect()->route('user.login')
             ->with('success', 'Registration successful! Please log in.');
@@ -43,37 +39,37 @@ class AuthController extends Controller
 
     public function login(Request $req)
     {
-        $req->validate(['email'=>'required|email','password'=>'required']);
+        $req->validate([
+            'email'=>'required|email',
+            'password'=>'required'
+        ]);
 
-        $user = DB::select("SELECT * FROM users WHERE email = ? LIMIT 1", [$req->email]);
+        $user = User::where('email', $req->email)->first();
 
-        if (count($user) === 0) {
-            return back()->withErrors(['email'=>'Credentials not match']);
+        if (!$user) {
+            return back()->withErrors(['email' => 'Credentials not match']);
         }
 
-        $user = $user[0];
-
-        // Jika password di tabel belum hash
+        // Jika db masih plaintext
         if (Hash::needsRehash($user->password)) {
 
             if ($req->password === $user->password) {
-                // Auto hash
-                DB::update("UPDATE users SET password = ? WHERE id = ?", [
-                    Hash::make($req->password),
-                    $user->id
+                // hash plaintext
+                $user->update([
+                    'password' => Hash::make($req->password)
                 ]);
             } else {
-                return back()->withErrors(['email'=>'Credentials not match']);
+                return back()->withErrors(['email' => 'Credentials not match']);
             }
 
         } else {
-            //Jika sudah hash bisa login normal
+            // check hash
             if (!Hash::check($req->password, $user->password)) {
-                return back()->withErrors(['email'=>'Credentials not match']);
+                return back()->withErrors(['email' => 'Credentials not match']);
             }
         }
 
-        // session
+        // Set session
         session()->forget('admin_id');
         session(['user_id' => $user->id]);
 

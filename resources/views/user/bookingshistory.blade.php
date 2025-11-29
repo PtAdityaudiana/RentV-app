@@ -4,7 +4,8 @@
 <h1>Riwayat Booking</h1>
   <table class="table">
     <thead><tr>
-      <th>Vehicle</th>
+      <th>Kendaraan</th>
+      <th>Gambar</th>
       <th>Periode</th>
       <th>Harga/Hari</th>
       <th>Status</th>
@@ -12,7 +13,9 @@
     <tbody>
       @foreach($bookings as $b)
         <tr>
-          <td>{{ $b->brand }} {{ $b->model }}</td>
+          <td>{{ $b->vehicle->brand }} {{ $b->vehicle->model }}</td>
+          <td><img src="{{ $b->vehicle->photo_path ? asset('storage/' . $b->vehicle->photo_path) : asset('images/no-photo.png') }}" 
+         style="max-width:150px; margin:auto;"></td>
           <td>{{ $b->start_date }} - {{ $b->end_date }}</td>
           <td><p>Rp.{{$b->price_per_day}}</p></td>
           <td>{{ $b->status }}</td>
