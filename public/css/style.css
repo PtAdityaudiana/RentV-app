@@ -85,12 +85,6 @@ nav a{
     background:#ffe6e6;
     color:#7a1a1a
 }
-footer.footer{
-    padding:20px;
-    text-align:center;
-    color:#777;
-    margin-top:30px
-}
 .search{
     display:flex;
     gap:8px;
@@ -131,6 +125,7 @@ button.late{
 
 form{
     margin:10px 0
+
 }
 
 .profile-card {
@@ -138,7 +133,8 @@ form{
     border: 1px solid #eaeaea;
     border-radius: 8px;
     max-width: 500px;
-    margin: 20px auto;
+    min-height: 300px;
+    margin: 30px auto;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
   .profile-card .card-header {
@@ -160,12 +156,15 @@ form{
   }
   .profile-card input[type="text"],
   .profile-card input[type="password"],
-  .profile-card input[type="file"] {
+  .profile-card input[type="file"],
+  .profile-card input[type="email"] {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
-  }
+    margin: 0 1px;
+    padding: 5px;
+}
   .profile-card button {
     background: #007bff;
     color: #fff;

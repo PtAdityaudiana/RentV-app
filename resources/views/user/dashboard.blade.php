@@ -3,7 +3,7 @@
 @section('content')
 
   <h2>Dashboard</h2>
-  <p>Halo, {{ $user->name }}</p>
+  <p>Halo, {{ $user->name }}. Selamat datang di dashboard, silahkan pilih kendaraan yang anda minati.</p>
 
   <h1>Daftar Kendaraan</h1>
   <form method="GET" class="search">

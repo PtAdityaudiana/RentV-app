@@ -36,6 +36,11 @@
           @if($user->avatar_path)
             <div class="preview">
               <img src="{{ asset('storage/' . $user->avatar_path) }}" alt="Avatar">
+
+              <button type="submit" name="delete_avatar" value="1" class="btn btn-danger" 
+                style="background:red;color:white;margin-top:10px;">
+                Hapus Foto Profil
+              </button>
             </div>
           @endif
         </div>

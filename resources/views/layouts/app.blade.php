@@ -33,9 +33,5 @@
     @if($errors->any()) <div class="alert error">{{ $errors->first() }}</div> @endif
     @yield('content')
   </main>
-
-  <footer class="footer">
-    <div class="container">© {{ date('Y') }} Sistem Peminjaman Kendaraan</div>
-  </footer>
 </body>
 </html>

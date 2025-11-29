@@ -2,7 +2,7 @@
 @section('content')
 <div class="profile-card">
   <div class="card-header">
-    <h2>Admin Login</h2>
+    <h2 style="text-align: center;">Admin Login</h2>
   </div>
   <div class="card-body">
     <form method="POST" action="{{ route('admin.login') }}">

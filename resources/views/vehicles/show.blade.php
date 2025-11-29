@@ -6,10 +6,11 @@
     <h1>{{ $vehicle->brand }} {{ $vehicle->model }}</h1>
 
     <img src="{{ $vehicle->photo_path ? asset('storage/' . $vehicle->photo_path) : asset('images/no-photo.png') }}" 
-         style="max-width:300px; margin:auto;">
+         style="max-width:250px; margin:auto;">
 
     <p><strong>Plat:</strong> {{ $vehicle->plate_number }}</p>
     <p><strong>Type:</strong> {{ $vehicle->type }}</p>
+    <p><strong>Warna:</strong> {{ $vehicle->color }}</p>
     <p><strong>Status:</strong> {{ $vehicle->status }}</p>
     <p><strong>Harga perhari:</strong> Rp.{{ $vehicle->price_per_day }}</p>
     <p><strong>Note:</strong> {{ $vehicle->notes }}</p>

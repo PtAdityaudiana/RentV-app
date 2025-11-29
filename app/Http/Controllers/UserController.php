@@ -38,6 +38,16 @@ class UserController extends Controller
 
         $req->validate(['name'=>'required']);
 
+        $user = DB::selectOne("SELECT avatar_path FROM users WHERE id = ?", [$userId]);
+        if ($req->has('delete_avatar') && $user->avatar_path) {
+
+            // hapus file fisik di storage
+            Storage::disk('public')->delete($user->avatar_path);
+    
+            // update path jadu null
+            DB::update("UPDATE users SET avatar_path = NULL WHERE id = ?", [$userId]);
+        }
+
         $avatarPath = null;
         if ($req->hasFile('avatar')) {
             $avatarPath = $req->file('avatar')->store('avatars','public');
