@@ -3,6 +3,10 @@
 @section('content')
 
 <div class="card" style="max-width:600px; margin:auto;">
+    <div class="form-group">
+      <a href="{{ url()->previous() }}" class="btn btn-secondary"> Kembali</a>
+    </div>
+
     <h1>{{ $vehicle->brand }} {{ $vehicle->model }}</h1>
 
     <img src="{{ $vehicle->photo_path ? asset('storage/' . $vehicle->photo_path) : asset('images/no-photo.png') }}" 
@@ -50,7 +54,7 @@
 @else
   <div class="card" style="max-width:500px; margin:auto;">
     <p>
-      <a href="{{ route('user.login') }}">Login</a> untuk membuat booking.
+      Silahkan <a href="{{ route('user.login') }}">Login</a> untuk membuat booking.
     </p>
   </div>
 @endif

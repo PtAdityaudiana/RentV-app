@@ -10,11 +10,6 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 
 
-Route::get('/test-mw', function () {
-    return "MW OK";
-})->middleware('user');
-
-
 Route::get('/', [SiteController::class, 'landing'])->name('landing');
 Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicles.index');
 Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');

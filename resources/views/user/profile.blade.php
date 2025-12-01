@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="container">
-  <h2>Profil Pengguna</h2>
 
   @if(session('success'))
     <div class="alert success">{{ session('success') }}</div>
@@ -14,12 +13,27 @@
 
   <div class="card profile-card">
     <div class="card-header">
-      <h3>Update Profil</h3>
+      <h3>Update User Profil</h3>
     </div>
     <div class="card-body">
       <form method="POST" action="{{ route('user.profile.update') }}" enctype="multipart/form-data">
         @csrf
-        
+
+        <div class="form-group">
+          <label>Foto Profil</label>
+          <input type="file" name="avatar">
+          @if($user->avatar_path)
+            <div class="preview">
+              <img src="{{ asset('storage/' . $user->avatar_path) }}" style="max-width:150px; margin:auto;" alt="Avatar">
+
+              <button type="submit" name="delete_avatar" value="1" class="btn btn-danger" 
+                style="background:red;color:white;margin-top:10px;">
+                Hapus Foto Profil
+              </button>
+            </div>
+          @endif
+        </div>
+
         <div class="form-group">
           <label>Nama Lengkap</label>
           <input type="text" name="name" value="{{ $user->name }}" required>
@@ -30,20 +44,7 @@
           <input type="text" name="phone" value="{{ $user->phone }}">
         </div>
 
-        <div class="form-group">
-          <label>Foto Profil</label>
-          <input type="file" name="avatar">
-          @if($user->avatar_path)
-            <div class="preview">
-              <img src="{{ asset('storage/' . $user->avatar_path) }}" alt="Avatar">
-
-              <button type="submit" name="delete_avatar" value="1" class="btn btn-danger" 
-                style="background:red;color:white;margin-top:10px;">
-                Hapus Foto Profil
-              </button>
-            </div>
-          @endif
-        </div>
+        
 
         <div class="form-group">
           <label>Password Baru (opsional)</label>
