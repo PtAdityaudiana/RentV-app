@@ -8,21 +8,22 @@
 <body>
   <header class="topbar">
     <div class="container">
-      @if(session('user_id'))
-      <a href="{{ route('user.dashboard') }}" class="brand">Rent-V</a>
-      @elseif(session('admin_id'))
-      <a href="{{ route('admin.dashboard') }}" class="brand">Rent-V</a>
+      <div class="banner">
+      @if(Auth::guard('user')->check())
+        <a href="{{ route('user.dashboard') }}" class="brand">Rent-V</a>
+      @elseif(Auth::guard('admin')->check())
+        <a href="{{ route('admin.dashboard') }}" class="brand">Rent-V</a>
       @else
-      <a href="{{ route('landing') }}" class="brand">Rent-V</a>
+        <a href="{{ route('landing') }}" class="brand">Rent-V</a>
       @endif
-   
+      </div>
       
       <nav>
-        @if(session('user_id'))
+        @if(Auth::guard('user')->check())
           <a href="{{ route('user.profile.edit') }}">Profile</a>
           <a href="{{ route('user.bookingshistory') }}">Booking History</a>
           <a href="{{ route('user.logout') }}">Logout</a>
-        @elseif(session('admin_id'))
+        @elseif(Auth::guard('admin')->check())
           <a href="{{ route('admin.logout') }}">Logout</a>
         @else
           <a href="{{ route('user.login') }}">Login</a>

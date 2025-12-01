@@ -2,15 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable
 {
     protected $table = 'users';
 
     protected $fillable = [
         'name', 'email', 'password', 'phone', 'avatar_path'
     ];
+
+    protected $hidden = ['password',];
 
     public function bookings()
     {

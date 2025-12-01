@@ -20,7 +20,7 @@
 
       <div class="form-group">
         <label>Password (biarkan kosong jika tidak diubah)</label>
-        <input type="text" name="password">
+        <input type="password" name="password">
       </div>
 
       <div class="form-group">

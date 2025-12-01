@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Booking;
 use App\Models\Vehicle;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
@@ -16,13 +17,8 @@ class BookingController extends Controller
             'end_date'   => 'required|date|after:start_date',
         ]);
 
-        $userId = session('user_id');
-        if (!$userId) {
-            return redirect()->route('user.login')
-                ->withErrors(['auth' => 'Please login']);
-        }
+       $user = Auth::guard('user')->user();
 
-        // Ambil vehicle
         $vehicle = Vehicle::find($req->vehicle_id);
         if (!$vehicle) {
             return back()->withErrors(['vehicle' => 'Vehicle not found']);
@@ -34,7 +30,7 @@ class BookingController extends Controller
 
         
         Booking::create([
-            'user_id'       => $userId,
+            'user_id'       => $user->id,
             'vehicle_id'    => $vehicle->id,
             'price_per_day' => $vehicle->price_per_day,
             'start_date'    => $req->start_date,
@@ -50,14 +46,11 @@ class BookingController extends Controller
 
     public function userBookings()
     {
-        $userId = session('user_id');
-        if (!$userId) {
-            return redirect()->route('user.login');
-        }
+        $user = Auth::guard('user')->user();
 
-        // Load bookings dgn relasi kendaraan
+        // Load booking dengan relasi vehicle
         $bookings = Booking::with('vehicle')
-            ->where('user_id', $userId)
+            ->where('user_id', $user->id)
             ->orderByDesc('id')
             ->get();
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
@@ -16,6 +17,7 @@ class AdminAuthController extends Controller
 
     public function login(Request $req)
     {
+
         $req->validate([
             'username' => 'required',
             'password' => 'required'
@@ -28,32 +30,29 @@ class AdminAuthController extends Controller
         }
 
     
-        if (Hash::needsRehash($admin->password)) {
-
+        if (!Hash::isHashed($admin->password)) {
             if ($req->password === $admin->password) {
-                $admin->update([
-                    'password' => Hash::make($req->password)
-                ]);
+                // Re-hash and update the password
+                $admin->password = Hash::make($req->password);
+                $admin->save();
             } else {
-                return back()->withErrors(['password' => 'Wrong password']);
+                return back()->withErrors(['password' => 'Credentials invalid']);
             }
 
-        } else {
-            if (!Hash::check($req->password, $admin->password)) {
-                return back()->withErrors(['password' => 'Wrong password']);
-            }
+        }elseif(!Hash::check($req->password, $admin->password)) {
+            return back()->withErrors(['password' => 'Credentials invalid']);
         }
-
-        // Set sesi
-        session()->forget('user_id');
-        session(['admin_id' => $admin->id]);
-
+        
+        Auth::guard('admin')->login($admin);
+        $req->session()->regenerate();
         return redirect()->route('admin.dashboard');
     }
 
-    public function logout()
+    public function logout(Request $req)
     {
-        session()->forget('admin_id');
+        Auth::guard('admin')->logout();
+        $req->session()->invalidate();
+        $req->session()->regenerateToken();
         return redirect()->route('admin.login');
     }
 }

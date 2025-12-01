@@ -9,6 +9,7 @@
       <th>Periode</th>
       <th>Harga/Hari</th>
       <th>Status</th>
+      <th>Catatan</th>
     </tr></thead>
     <tbody>
       @foreach($bookings as $b)
@@ -19,6 +20,7 @@
           <td>{{ $b->start_date }} - {{ $b->end_date }}</td>
           <td><p>Rp.{{$b->price_per_day}}</p></td>
           <td>{{ $b->status }}</td>
+          <td>{{$b->notes}}</td>
         </tr>
       @endforeach
     </tbody>

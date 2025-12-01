@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -44,41 +45,24 @@ class AuthController extends Controller
             'password'=>'required'
         ]);
 
-        $user = User::where('email', $req->email)->first();
+        //$user = User::where('email', $req->email)->first();
+        $credentials = $req->only('email', 'password');
 
-        if (!$user) {
-            return back()->withErrors(['email' => 'Credentials not match']);
+        if (Auth::guard('user')->attempt($credentials)) {
+            // Authentication passed...
+            $req->session()->regenerate();
+            return redirect()->route('user.dashboard');
         }
-
-        // Jika db masih plaintext
-        if (Hash::needsRehash($user->password)) {
-
-            if ($req->password === $user->password) {
-                // hash plaintext
-                $user->update([
-                    'password' => Hash::make($req->password)
-                ]);
-            } else {
-                return back()->withErrors(['email' => 'Credentials not match']);
-            }
-
-        } else {
-            // check hash
-            if (!Hash::check($req->password, $user->password)) {
-                return back()->withErrors(['email' => 'Credentials not match']);
-            }
-        }
-
-        // Set session
-        session()->forget('admin_id');
-        session(['user_id' => $user->id]);
-
-        return redirect()->route('user.dashboard');
+        
+        return back()->withErrors(['email' => 'Credentials not match']);
     }
 
-    public function logout()
+    public function logout(Request $req)
     {
-        session()->forget('user_id');
+        Auth::guard('user')->logout();
+        $req->session()->invalidate();
+        $req->session()->regenerateToken();
+
         return redirect()->route('landing');
     }
 }

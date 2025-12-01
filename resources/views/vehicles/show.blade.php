@@ -23,7 +23,7 @@
 
 <br>
 
-@if(session('user_id'))
+@if(Auth::guard('user')->check())
 
   @if($vehicle->status === 'available')
     

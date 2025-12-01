@@ -8,21 +8,15 @@ use App\Models\Vehicle;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
-    protected function guard()
-    {
-        if (!session('admin_id')) {
-            abort(403, 'Unauthorized');
-        }
-    }
 
 
     public function dashboard()
     {
-        $this->guard();
-
+        
         $pending   = Booking::where('status', 'pending')->count();
         $vehicles  = Vehicle::count();
         $users     = User::count();
@@ -37,8 +31,6 @@ class AdminController extends Controller
     // status control
     public function bookingApprove($id)
     {
-        $this->guard();
-
         $booking = Booking::findOrFail($id);
 
         $booking->update(['status' => 'approved']);
@@ -49,8 +41,6 @@ class AdminController extends Controller
 
     public function bookingReject($id)
     {
-        $this->guard();
-
         Booking::findOrFail($id)->update([
             'status' => 'rejected'
         ]);
@@ -60,8 +50,6 @@ class AdminController extends Controller
 
     public function bookingReturn($id)
     {
-        $this->guard();
-
         $booking = Booking::findOrFail($id);
 
         $booking->update(['status' => 'returned']);
@@ -72,8 +60,6 @@ class AdminController extends Controller
 
     public function bookingLate($id)
     {
-        $this->guard();
-
         Booking::findOrFail($id)->update([
             'status' => 'late'
         ]);
@@ -84,22 +70,18 @@ class AdminController extends Controller
     # user crud
     public function usersIndex()
     {
-        $this->guard();
-
         $users = User::orderBy('id')->get();
         return view('admin.users.index', compact('users'));
     }
 
     public function usersCreate()
     {
-        $this->guard();
+        
         return view('admin.users.create');
     }
 
     public function usersStore(Request $req)
-    {
-        $this->guard();
-        
+    {  
         $req->validate([
             'name'     => 'required',
             'email'    => 'required|email|unique:users,email',
@@ -119,16 +101,12 @@ class AdminController extends Controller
 
     public function usersEdit($id)
     {
-        $this->guard();
-
         $user = User::findOrFail($id);
         return view('admin.users.edit', compact('user'));
     }
 
     public function usersUpdate(Request $req, $id)
     {
-        $this->guard();
-
         $req->validate([
             'name'  => 'required',
             'email' => 'required|email'
@@ -155,8 +133,6 @@ class AdminController extends Controller
 
     public function usersDelete($id)
     {
-        $this->guard();
-
         User::destroy($id);
         return back()->with('success','User deleted');
     }
@@ -164,22 +140,17 @@ class AdminController extends Controller
     // vehicle crud
     public function vehiclesIndex()
     {
-        $this->guard();
-
         $vehicles = Vehicle::orderByDesc('id')->get();
         return view('admin.vehicles.index', compact('vehicles'));
     }
 
     public function vehiclesCreate()
     {
-        $this->guard();
         return view('admin.vehicles.create');
     }
 
     public function vehiclesStore(Request $req)
     {
-        $this->guard();
-
         $req->validate([
             'type'          => 'required',
             'brand'         => 'required',
@@ -210,16 +181,12 @@ class AdminController extends Controller
 
     public function vehiclesEdit($id)
     {
-        $this->guard();
-
         $vehicle = Vehicle::findOrFail($id);
         return view('admin.vehicles.edit', compact('vehicle'));
     }
 
     public function vehiclesUpdate(Request $req, $id)
     {
-        $this->guard();
-
         $req->validate([
             'type'          => 'required',
             'brand'         => 'required',
@@ -252,8 +219,6 @@ class AdminController extends Controller
 
     public function vehiclesDelete($id)
     {
-        $this->guard();
-
         Vehicle::destroy($id);
         return back()->with('success','Vehicle deleted');
     }
