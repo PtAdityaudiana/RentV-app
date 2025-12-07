@@ -24,6 +24,8 @@
           <a href="{{ route('user.bookingshistory') }}">Booking History</a>
           <a href="{{ route('user.logout') }}">Logout</a>
         @elseif(Auth::guard('admin')->check())
+          <a href="{{ route('admin.users.index') }}">Manage User</a>
+          <a href="{{ route('admin.vehicles.index') }}">Manage Vehicles</a>
           <a href="{{ route('admin.logout') }}">Logout</a>
         @else
           <a href="{{ route('user.login') }}">Login</a>

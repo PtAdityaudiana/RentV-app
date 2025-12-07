@@ -2,7 +2,7 @@
 @section('title','Detail Kendaraan')
 @section('content')
 
-<div class="card" style="max-width:600px; margin:auto;">
+<div class="card card-show" style="max-width:600px; margin:auto;">
     <div class="form-group">
       <a href="{{ url()->previous() }}" class="btn btn-secondary"> Kembali</a>
     </div>
@@ -27,7 +27,7 @@
 
   @if($vehicle->status === 'available')
     
-    <div class="card" style="max-width:600px; margin:auto;">
+    <div class="card card-show" style="max-width:600px; margin:auto;">
         <h3 style="margin-bottom:10px;">Request Booking</h3>
 
         <form method="POST" action="{{ route('booking.store') }}">

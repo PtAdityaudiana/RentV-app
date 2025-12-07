@@ -6,11 +6,6 @@
     <p><strong>Pending bookings:</strong> {{ $pending }}</p>
     <p><strong>Total vehicles:</strong> {{ $vehicles }}</p>
     <p><strong>Total users:</strong> {{ $users }}</p>
-
-    <p>
-      <a href="{{ route('admin.users.index') }}" class="btn">Manage Users</a> |
-      <a href="{{ route('admin.vehicles.index') }}" class="btn">Manage Vehicles</a>
-    </p>
   </div>
 
   <hr>

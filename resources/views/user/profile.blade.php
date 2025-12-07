@@ -26,8 +26,8 @@
             <div class="preview">
               <img src="{{ asset('storage/' . $user->avatar_path) }}" style="max-width:150px; margin:auto;" alt="Avatar">
 
-              <button type="submit" name="delete_avatar" value="1" class="btn btn-danger" 
-                style="background:red;color:white;margin-top:10px;">
+              <button type="submit" name="delete_avatar" value="1" class="btn btn-secondary" 
+                style="background:red;color:white;margin-top:10px;" onclick="return confirm('Yakin untuk menghapus foto profil?')">
                 Hapus Foto Profil
               </button>
             </div>
@@ -52,8 +52,8 @@
         </div>
 
         <div class="form-group">
-          <button type="submit">Simpan Perubahan</button>
-          <a href="{{ route('user.dashboard') }}" class="btn cancel">Kembali</a>
+          <button type="submit" class="btn">Simpan Perubahan</button>
+          <a href="{{ route('user.dashboard') }}" class="btn btn-secondary">Kembali</a>
         </div>
       </form>
     </div>

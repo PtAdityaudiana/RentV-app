@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // --- Vehicles ---
+      
         Schema::table('vehicles', function (Blueprint $table) {
             if (!Schema::hasColumn('vehicles', 'price_per_day')) {
                 $table->decimal('price_per_day', 10, 3)->nullable()->after('year');
             }
         });
 
-        // --- Bookings ---
+
         Schema::table('bookings', function (Blueprint $table) {
             if (!Schema::hasColumn('bookings', 'price_per_day')) {
                 $table->decimal('price_per_day', 10, 3)->nullable()->after('vehicle_id');
@@ -32,7 +32,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        // Saat rollback, hapus kolom tambahan ini (optional)
+        
         Schema::table('vehicles', function (Blueprint $table) {
             if (Schema::hasColumn('vehicles', 'price_per_day')) {
                 $table->dropColumn('price_per_day');

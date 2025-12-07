@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('content')
   <h2>Users</h2>
-  <p><a href="{{ route('admin.users.create') }}" class="btn">Create User</a></p>
+  <p>
+    <a href="{{ route('admin.users.create') }}" class="btn">Create User</a>
+    <a href="{{ url()->previous() }}" class="btn btn-secondary"> Back</a>
+  </p>
   <table class="table">
     <thead><tr>
       <th>User Id</th>
@@ -19,8 +22,8 @@
         <td>{{ $u->name }}</td>
         <td>{{ $u->email }}</td>
         <td>
-          <a href="{{ route('admin.users.edit', $u->id) }}">Edit</a>
-          <form style="display:inline" method="POST" action="{{ route('admin.users.delete', $u->id) }}">@csrf<button>Delete</button></form>
+            <a href="{{ route('admin.users.edit', $u->id) }}" class="btn">Edit</a>
+            <form style="display:inline" method="POST" action="{{ route('admin.users.delete', $u->id) }}">@csrf<button class="btn btn-secondary" onclick="return confirm('Yakin ingin menghapus user ini?')">Delete</button></form>
         </td>
       </tr>
       @endforeach

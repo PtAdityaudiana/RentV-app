@@ -11,8 +11,15 @@ use App\Http\Controllers\SiteController;
 
 
 
-//Route::get('/', function () {return view('landing');})->name('landing');
 Route::get('/', [SiteController::class, 'landing'])->name('landing');
+
+Route::get('/cek-guard', function () {
+    return [
+        'user' => Auth::guard('user')->check(),
+        'admin' => Auth::guard('admin')->check(),
+        'default' => Auth::check(),
+    ];
+});
 
 
 Route::get('/user/login', [AuthController::class, 'showLogin'])->name('user.login');
@@ -22,7 +29,7 @@ Route::get('/user/register', [AuthController::class, 'showRegister'])->name('use
 Route::post('/user/register', [AuthController::class, 'register'])->name('user.register.post');
 
 
-Route::middleware('auth:user')->group(function () {
+Route::middleware('userAuth')->group(function () {
 
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
 
@@ -47,7 +54,7 @@ Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('adm
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
 
 
-Route::prefix('admin')->middleware('auth:admin')->group(function () {
+Route::prefix('admin')->middleware('adminAuth')->group(function () {
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 

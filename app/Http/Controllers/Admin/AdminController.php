@@ -140,7 +140,7 @@ class AdminController extends Controller
     // vehicle crud
     public function vehiclesIndex()
     {
-        $vehicles = Vehicle::orderByDesc('id')->get();
+        $vehicles = Vehicle::orderBy('id')->get();
         return view('admin.vehicles.index', compact('vehicles'));
     }
 
