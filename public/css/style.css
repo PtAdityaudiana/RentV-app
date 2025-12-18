@@ -17,7 +17,7 @@ body{
     padding:20px 0;
 }
 
-/* TOPBAR */
+
 .topbar{
     position: fixed;
     top: 0;
@@ -69,7 +69,7 @@ body{
     font-weight:600;
 }
 
-/* MOBILE NAV */
+
 @media (max-width: 600px){
     .topbar .container{
         flex-direction:column;
@@ -77,14 +77,14 @@ body{
     }
 }
 
-/* GRID */
+
 .grid{
     display:grid;
     gap:20px;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }
 
-/* CARD */
+
 .card{
     background:#1f1f28;
     padding:15px;
@@ -114,11 +114,11 @@ body{
     margin-bottom:12px;
 }
 
-/* BUTTON */
+
 .btn, button{
     display:inline-block;
     padding:10px 16px;
-    background:#4c4edf; /* Indigo */
+    background:#4c4edf; 
     color:#fff;
     font-size:14px;
     border-radius:10px;
@@ -133,7 +133,7 @@ body{
 }
 
 .btn.btn-secondary{
-    background:#374151; /* Gray-700 */
+    background:#374151; 
     color:#e5e7eb;
 }
 
@@ -142,7 +142,7 @@ body{
 }
 
 .btn.btn-delete{
-    background:#ef4444; /* Red-500 */
+    background:#ef4444; 
     color:#fff;
 }
 
@@ -151,7 +151,7 @@ body{
 }
 
 
-/* FORMS */
+
 input, select, textarea{
     padding:10px;
     border:1px solid #3a3a45;
@@ -177,7 +177,7 @@ input:focus, select:focus, textarea:focus{
     margin-bottom:20px;
 }
 
-/* PROFILE CARD */
+
 .profile-card{
     background:#1f1f28;
     border-radius:16px;
@@ -214,7 +214,7 @@ input:focus, select:focus, textarea:focus{
     transform: none !important;
 }
 
-/* TABLE */
+
 .table{
     width:100%;
     border-collapse:collapse;

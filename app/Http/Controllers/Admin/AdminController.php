@@ -120,7 +120,7 @@ class AdminController extends Controller
             'phone' => $req->phone
         ]);
 
-        // change password
+     
         if ($req->filled('password')) {
             $user->update([
                 'password' => Hash::make($req->password)

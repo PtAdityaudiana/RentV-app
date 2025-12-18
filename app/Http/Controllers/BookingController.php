@@ -48,7 +48,7 @@ class BookingController extends Controller
     {
         $user = Auth::guard('user')->user();
 
-        // Load booking dengan relasi vehicle
+       
         $bookings = Booking::with('vehicle')
             ->where('user_id', $user->id)
             ->orderByDesc('id')

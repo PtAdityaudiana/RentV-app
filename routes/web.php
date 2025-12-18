@@ -10,7 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SiteController;
 
 
-//landing
+
 Route::get('/', [SiteController::class, 'landing'])->name('landing');
 Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
 
@@ -43,7 +43,7 @@ Route::middleware('userAuth')->group(function () {
 
 
 
-/*admin auth*/ 
+
 Route::get('/admin/login', [AdminAuthController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
 
