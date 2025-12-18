@@ -23,6 +23,7 @@ class AdminAuthController extends Controller
             'password' => 'required'
         ]);
 
+        
         $admin = Admin::where('username', $req->username)->first();
 
         if (!$admin) {
@@ -32,7 +33,7 @@ class AdminAuthController extends Controller
     
         if (!Hash::isHashed($admin->password)) {
             if ($req->password === $admin->password) {
-                // Re-hash and update the password
+                
                 $admin->password = Hash::make($req->password);
                 $admin->save();
             } else {
@@ -43,6 +44,7 @@ class AdminAuthController extends Controller
             return back()->withErrors(['password' => 'Credentials invalid']);
         }
         
+        Auth::guard('user')->logout();
         Auth::guard('admin')->login($admin);
         $req->session()->regenerate();
         return redirect()->route('admin.dashboard');

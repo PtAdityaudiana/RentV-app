@@ -11,8 +11,10 @@
       <div class="banner">
       @if(Auth::guard('user')->check())
         <a href="{{ route('user.dashboard') }}" class="brand">Rent-V</a>
+
       @elseif(Auth::guard('admin')->check())
         <a href="{{ route('admin.dashboard') }}" class="brand">Rent-V</a>
+        
       @else
         <a href="{{ route('landing') }}" class="brand">Rent-V</a>
       @endif

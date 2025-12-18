@@ -11,6 +11,7 @@
       <th>Profile Pic</th>
       <th>Name</th>
       <th>Email</th>
+      <th>Phone Number</th>
       <th>Action</th>
     </tr></thead>
     <tbody>
@@ -21,9 +22,10 @@
          style="max-width:50px; margin:auto;"></td>
         <td>{{ $u->name }}</td>
         <td>{{ $u->email }}</td>
+        <td>{{ $u->phone}}</td>
         <td>
             <a href="{{ route('admin.users.edit', $u->id) }}" class="btn">Edit</a>
-            <form style="display:inline" method="POST" action="{{ route('admin.users.delete', $u->id) }}">@csrf<button class="btn btn-secondary" onclick="return confirm('Yakin ingin menghapus user ini?')">Delete</button></form>
+            <form style="display:inline" method="POST" action="{{ route('admin.users.delete', $u->id) }}">@csrf<button class="btn btn-delete" onclick="return confirm('Yakin ingin menghapus user ini?')">Delete</button></form>
         </td>
       </tr>
       @endforeach

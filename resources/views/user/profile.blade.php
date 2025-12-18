@@ -4,12 +4,7 @@
 @section('content')
 <div class="container">
 
-  @if(session('success'))
-    <div class="alert success">{{ session('success') }}</div>
-  @endif
-  @if(session('error'))
-    <div class="alert error">{{ session('error') }}</div>
-  @endif
+
 
   <div class="card profile-card">
     <div class="card-header">
@@ -26,8 +21,8 @@
             <div class="preview">
               <img src="{{ asset('storage/' . $user->avatar_path) }}" style="max-width:150px; margin:auto;" alt="Avatar">
 
-              <button type="submit" name="delete_avatar" value="1" class="btn btn-secondary" 
-                style="background:red;color:white;margin-top:10px;" onclick="return confirm('Yakin untuk menghapus foto profil?')">
+              <button type="submit" name="delete_avatar" value="1" class="btn btn-delete" 
+                style="display:inline;" onclick="return confirm('Yakin untuk menghapus foto profil?')">
                 Hapus Foto Profil
               </button>
             </div>

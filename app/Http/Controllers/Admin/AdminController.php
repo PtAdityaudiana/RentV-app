@@ -63,7 +63,7 @@ class AdminController extends Controller
         Booking::findOrFail($id)->update([
             'status' => 'late'
         ]);
-
+        
         return back()->with('success', 'Booking marked as late');
     }
 

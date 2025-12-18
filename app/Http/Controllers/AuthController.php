@@ -45,11 +45,10 @@ class AuthController extends Controller
             'password'=>'required'
         ]);
 
-        //$user = User::where('email', $req->email)->first();
         $credentials = $req->only('email', 'password');
 
         if (Auth::guard('user')->attempt($credentials)) {
-            // Authentication passed...
+            Auth::guard('admin')->logout();
             $req->session()->regenerate();
             return redirect()->route('user.dashboard');
         }

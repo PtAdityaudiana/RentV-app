@@ -3,11 +3,26 @@
 @section('title','Landing')
 
 @section('content')
+
   <h1>RENT-V</h1>
   <h2>Sistem Peminjaman Kendaraan</h2>
   <p>Selamat datang di Rent-V. Sistem peminjaman kendaraan: anda dapat melihat kendaraan, request peminjaman, dan admin akan approve/reject.</p>
 
   <h2>Kendaraan Yang Tersedia</h2>
+
+  <div class="search">
+   <form method="GET" class="search">
+    <input name="q" placeholder="Cari brand, model, plat..." value="{{ request('q') }}">
+    <select name="type">
+      <option value="">-- Semua jenis --</option>
+      <option {{ request('type')=='motor'?'selected':'' }} value="motor">Motor</option>
+      <option {{ request('type')=='mobil'?'selected':'' }} value="mobil">Mobil</option>
+    </select>
+    <button>Cari</button>
+   </form>
+  </div>
+
+
   <div class="grid">
     @foreach($vehicles as $v)
       <div class="card">

@@ -14,7 +14,7 @@
   <table class="table" border="1" cellpadding="6" cellspacing="0" width="100%">
     <thead style="background:#f5f5f5;">
       <tr>
-        <th>#</th>
+        <th>Booking_id</th>
         <th>User</th>
         <th>Vehicle</th>
         <th>Period</th>
@@ -26,19 +26,18 @@
     <tbody>
       @foreach($bookings as $b)
       <tr>
-        <td>{{ $b->user->id }}</td>
+        <td>{{ $b->id }}</td>
         <td>{{ $b->user->name }}</td>
         <td>{{ $b->vehicle->brand }} {{ $b->vehicle->model }}</td>
         <td>{{ $b->start_date }} - {{ $b->end_date }}</td>
         <td>{{ $b->notes }}</td>
-
         <td>
           @if($b->status === 'pending')
             <form method="POST" action="{{ route('admin.bookings.approve', $b->id) }}" style="display:inline">@csrf
-              <button class="approve">Approve</button>
+              <button class="btn">Approve</button>
             </form>
             <form method="POST" action="{{ route('admin.bookings.reject', $b->id) }}" style="display:inline">@csrf
-              <button class="reject">Reject</button>
+              <button class="btn btn-delete">Reject</button>
             </form>
           @endif
         </td>
@@ -46,10 +45,10 @@
         <td>
           @if($b->status === 'approved')
             <form method="POST" action="{{ route('admin.bookings.return', $b->id) }}" style="display:inline">@csrf
-              <button class="return">Mark as Returned</button>
+              <button class="btn">Mark as Returned</button>
             </form>
             <form method="POST" action="{{ route('admin.bookings.late', $b->id) }}" style="display:inline">@csrf
-              <button class="late">Mark as Late</button>
+              <button class="btn btn-delete">Mark as Late</button>
             </form>
 
           @elseif($b->status === 'late')
@@ -59,8 +58,10 @@
             <span style="color:green;">Returned</span>
 
           @elseif($b->status === 'rejected')
-            <span style="color:black;">Rejected</span>
+            <span style="color:white;">Rejected</span>
 
+          @elseif($b->status === 'canceled')
+            <span style="color:red;">Canceled by user</span>
           @endif
         </td>
       </tr>

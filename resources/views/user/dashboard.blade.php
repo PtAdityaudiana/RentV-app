@@ -6,8 +6,9 @@
   <p>Halo, <span><strong>{{ $user->name }}</strong></span>. Selamat datang di dashboard, silahkan pilih kendaraan yang anda minati.</p>
 
   <h1>Daftar Kendaraan</h1>
+  
   <div class="search">
-  <form method="GET" class="search">
+   <form method="GET" class="search">
     <input name="q" placeholder="Cari brand, model, plat..." value="{{ request('q') }}">
     <select name="type">
       <option value="">-- Semua jenis --</option>
@@ -15,8 +16,9 @@
       <option {{ request('type')=='mobil'?'selected':'' }} value="mobil">Mobil</option>
     </select>
     <button>Cari</button>
-  </form>
+   </form>
   </div>
+
   <h2>Kendaraan Tersedia</h2>
   <div class="grid">
     @foreach($vehicles as $v)

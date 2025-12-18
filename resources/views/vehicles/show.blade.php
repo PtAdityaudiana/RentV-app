@@ -43,7 +43,7 @@
             <label>Catatan</label>
             <textarea name="notes"></textarea>
 
-            <button style="margin-top:10px;">Request</button>
+            <button style="margin-top:10px;" class="btn">Request</button>
         </form>
     </div>
 
@@ -52,7 +52,7 @@
   @endif
 
 @else
-  <div class="card" style="max-width:500px; margin:auto;">
+  <div class="card card-show" style="max-width:500px; margin:auto;">
     <p>
       Silahkan <a href="{{ route('user.login') }}">Login</a> untuk membuat booking.
     </p>

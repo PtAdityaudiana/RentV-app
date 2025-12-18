@@ -29,7 +29,7 @@
       </div>
 
       <button type="submit">Simpan</button>
-      <a href="{{ route('admin.users.index') }}" class="cancel">Batal</a>
+      <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Batal</a>
     </form>
   </div>
 </div>

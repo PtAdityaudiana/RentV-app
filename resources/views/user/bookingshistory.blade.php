@@ -19,7 +19,14 @@
          style="max-width:150px; margin:auto;"></td>
           <td>{{ $b->start_date }} - {{ $b->end_date }}</td>
           <td><p>Rp.{{$b->price_per_day}}</p></td>
-          <td>{{ $b->status }}</td>
+          <td>{{ $b->status }}
+            @if( $b->status === 'pending')
+            <form action="{{ route('booking.cancel', $b->id) }}" method="POST" style="display:inline;">
+            @csrf
+              <button type="submit"style="display:inline" onclick="return confirm('Yakin ingin membatalkan booking?')" class="btn btn-delete">Cancel</button>
+            </form>
+            @endif
+          </td>
           <td>{{$b->notes}}</td>
         </tr>
       @endforeach

@@ -10,16 +10,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SiteController;
 
 
-
+//landing
 Route::get('/', [SiteController::class, 'landing'])->name('landing');
+Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
 
-Route::get('/cek-guard', function () {
-    return [
-        'user' => Auth::guard('user')->check(),
-        'admin' => Auth::guard('admin')->check(),
-        'default' => Auth::check(),
-    ];
-});
 
 
 Route::get('/user/login', [AuthController::class, 'showLogin'])->name('user.login');
@@ -32,21 +26,21 @@ Route::post('/user/register', [AuthController::class, 'register'])->name('user.r
 Route::middleware('userAuth')->group(function () {
 
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
-
+    
     Route::get('/user/profile', [UserController::class, 'editProfile'])->name('user.profile.edit');
     Route::post('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
 
 
     Route::post('/booking/create', [BookingController::class, 'store'])->name('booking.store');
     Route::get('/user/bookings', [BookingController::class, 'userBookings'])->name('user.bookingshistory');
+    Route::post('/booking/{id}/cancel', [BookingController::class, 'cancel'])->name('booking.cancel');
 
     Route::get('/user/logout', [AuthController::class, 'logout'])->name('user.logout');
 });
 
 
 
-Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicles.index');
-Route::get('/vehicles/{id}', [VehicleController::class, 'show'])->name('vehicles.show');
+
 
 
 /*admin auth*/ 
@@ -57,6 +51,7 @@ Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.
 Route::prefix('admin')->middleware('adminAuth')->group(function () {
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
 
     Route::get('/users', [AdminController::class, 'usersIndex'])->name('admin.users.index');
     Route::get('/users/create', [AdminController::class, 'usersCreate'])->name('admin.users.create');

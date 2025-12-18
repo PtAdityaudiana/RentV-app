@@ -26,7 +26,7 @@
         <td>{{ $v->status }}</td>
         <td>
           <a href="{{ route('admin.vehicles.edit', $v->id) }}" class="btn">Edit</a>
-          <form style="display:inline" method="POST" action="{{ route('admin.vehicles.delete', $v->id) }}">@csrf<button class="btn btn-secondary" onclick="return confirm('Yakin ingin menghapus kendaraan ini?')">Delete</button></form>
+          <form style="display:inline" method="POST" action="{{ route('admin.vehicles.delete', $v->id) }}">@csrf<button class="btn btn-delete" onclick="return confirm('Yakin ingin menghapus kendaraan ini?')">Delete</button></form>
         </td>
       </tr>
       @endforeach

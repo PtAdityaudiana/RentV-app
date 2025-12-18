@@ -56,4 +56,26 @@ class BookingController extends Controller
 
         return view('user.bookingshistory', compact('bookings'));
     }
+
+    public function cancel($id){
+        $user = Auth::guard('user')->user();
+
+        $bookings = Booking::where('id', $id)
+            ->where('status', 'pending')
+            ->first();
+
+        if(!$bookings){
+            return back()->withErrors(['booking' => 'Booking tidak ditemukan']);
+        }
+
+        if($bookings->status !== 'pending'){
+            return back()->withErrors(['booking' => 'Hanya booking dengan status pending yang bisa dibatalkan']);
+        }
+
+        $bookings->status = 'canceled';
+        $bookings->save();
+
+        return back()->with('success', 'Booking berhasil dibatalkan');
+    }
+
 }
